@@ -57,7 +57,6 @@ Route::prefix('/v1')->group(function () {
 
     //hotels
     Route::get('/hotels', [HotelController::class, 'index']);
-    Route::get('/hotels/{id}', [HotelController::class, 'show']);
     Route::prefix('/tours')->group(
         function () {
             //suggestHotel

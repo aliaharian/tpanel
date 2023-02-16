@@ -203,34 +203,6 @@
                 }
             }
         },
-        "/v1/hotels/{id}": {
-            "get": {
-                "tags": [
-                    "Hotels"
-                ],
-                "summary": "show hotel",
-                "operationId": "85d229baf98be68bf72635f5e31f80bd",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "id of hotel",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success",
-                        "content": {
-                            "application/json": {}
-                        }
-                    }
-                }
-            }
-        },
         "/v1/tours/suggest/hotel": {
             "post": {
                 "tags": [
