@@ -1,0 +1,570 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "My First API",
+        "version": "0.1"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
+    "paths": {
+        "/api/v1": {},
+        "/v1/sendOtp": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "send otp",
+                "operationId": "01f56cc632ba0a574f4eec0cb710ab25",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "mobile"
+                                ],
+                                "properties": {
+                                    "mobile": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "09307473703"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/verifyOtp": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "verify otp",
+                "operationId": "0fa25ef0cbda9d3e046e8661e1c1568a",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "mobile",
+                                    "code"
+                                ],
+                                "properties": {
+                                    "mobile": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "09307473703"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "1234"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/userInfo": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "user info",
+                "operationId": "abc49f98e930aac7db6bcd90030a2f60",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/setUserInfo": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "set user info",
+                "operationId": "984d231e8f9313192d8e1b0ebc03634a",
+                "requestBody": {
+                    "description": "Pass user credentials",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "ali"
+                                    },
+                                    "lastName": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "mohammadi"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "string",
+                                        "example": "ali@gmail.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/cities/available": {
+            "get": {
+                "tags": [
+                    "Cities"
+                ],
+                "summary": "available cities list",
+                "operationId": "d416f4542904637b3a1549003104be63",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/hotels": {
+            "get": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "hotels list",
+                "operationId": "7b89784b11ecf385a1989cc72808ac1b",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/tours/suggest/hotel": {
+            "post": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "suggest hotels",
+                "operationId": "bf0b6388311455d00eba491558f95cd9",
+                "requestBody": {
+                    "description": "Pass tour suggest parameters",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "adult",
+                                    "kids",
+                                    "teens",
+                                    "infants",
+                                    "from_date",
+                                    "to_date",
+                                    "from_city_id",
+                                    "to_city_id",
+                                    "departure_vehicle_type",
+                                    "arrival_vehicle_type"
+                                ],
+                                "properties": {
+                                    "adult": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "kids": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "teens": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "infants": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "from_date": {
+                                        "type": "string",
+                                        "example": "1675456200000"
+                                    },
+                                    "to_date": {
+                                        "type": "string",
+                                        "example": "1676233800000"
+                                    },
+                                    "from_city_id": {
+                                        "type": "integer",
+                                        "example": "360"
+                                    },
+                                    "to_city_id": {
+                                        "type": "integer",
+                                        "example": "522"
+                                    },
+                                    "departure_vehicle_type": {
+                                        "type": "string",
+                                        "example": "TRAIN"
+                                    },
+                                    "arrival_vehicle_type": {
+                                        "type": "string",
+                                        "example": "TRAIN"
+                                    },
+                                    "order": {
+                                        "type": "string",
+                                        "example": "price"
+                                    },
+                                    "min_price": {
+                                        "type": "integer",
+                                        "example": "100000"
+                                    },
+                                    "max_price": {
+                                        "type": "integer",
+                                        "example": "100000"
+                                    },
+                                    "hotel_rate": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    },
+                                    "hotel_stars": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/tours/suggest/vehicle": {
+            "post": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "suggest vehicles",
+                "operationId": "1c274ccc3a0c988bc283db3e6be21d8b",
+                "requestBody": {
+                    "description": "Pass tour suggest parameters",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "adult",
+                                    "kids",
+                                    "teens",
+                                    "infants",
+                                    "from_date",
+                                    "to_date",
+                                    "from_city_id",
+                                    "to_city_id",
+                                    "departure_vehicle_type",
+                                    "arrival_vehicle_type"
+                                ],
+                                "properties": {
+                                    "adult": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "kids": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "teens": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "infants": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "example": "1675456200000"
+                                    },
+                                    "from_city_id": {
+                                        "type": "integer",
+                                        "example": "360"
+                                    },
+                                    "to_city_id": {
+                                        "type": "integer",
+                                        "example": "522"
+                                    },
+                                    "vehicle_type": {
+                                        "type": "string",
+                                        "example": "TRAIN"
+                                    },
+                                    "order": {
+                                        "type": "string",
+                                        "example": "price"
+                                    },
+                                    "prev_vehicle_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/tours/services": {
+            "get": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "get tour services",
+                "operationId": "a0b44e467d4a80fe965595e5f71b170a",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/tours/user": {
+            "get": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "get user tours",
+                "operationId": "96ffc939d0c2cd41d641f4785b383a09",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/user/passengers": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "user passengers list",
+                "operationId": "441d6c1ef56d1bbf674de7e33c5993e4",
+                "responses": {
+                    "200": {
+                        "description": "user passengers list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "passengers list"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/user/transactions": {
+            "get": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "user transactions list",
+                "operationId": "4a61ead094eeb5e5d39296d2d4da3acf",
+                "responses": {
+                    "200": {
+                        "description": "user transactions list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "transactions list"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthenticated."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "This action is unauthorized."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "apiAuth": {
+                "type": "http",
+                "description": "Login with email and password to get the authentication token",
+                "name": "Token based Based",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    }
+}
