@@ -203,6 +203,34 @@
                 }
             }
         },
+        "/v1/hotels/{id}": {
+            "get": {
+                "tags": [
+                    "Hotels"
+                ],
+                "summary": "show hotel",
+                "operationId": "85d229baf98be68bf72635f5e31f80bd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id of hotel",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
         "/v1/tours/suggest/hotel": {
             "post": {
                 "tags": [
@@ -414,6 +442,220 @@
                 "responses": {
                     "200": {
                         "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/tours/calculatePrice": {
+            "post": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "calc price",
+                "operationId": "358e9d48eb34234ad2b3b3bb773a435e",
+                "requestBody": {
+                    "description": "Pass tour suggest parameters",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "adult",
+                                    "kids",
+                                    "teens",
+                                    "infants",
+                                    "from_date",
+                                    "to_date",
+                                    "from_city_id",
+                                    "to_city_id",
+                                    "departure_vehicle_type",
+                                    "arrival_vehicle_type"
+                                ],
+                                "properties": {
+                                    "adult": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "kids": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "teens": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "infants": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "hotel_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "arrival_vehicle_id": {
+                                        "type": "integer",
+                                        "example": "7"
+                                    },
+                                    "departure_vehicle_id": {
+                                        "type": "integer",
+                                        "example": "6"
+                                    },
+                                    "tour_services": {
+                                        "type": "string",
+                                        "example": "3,4,5,6"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/tours/save": {
+            "post": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "save tour",
+                "operationId": "1bbce2c9b6780660c307351c3d21931d",
+                "requestBody": {
+                    "description": "Pass tour suggest parameters",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "from_city": {
+                                        "type": "integer",
+                                        "example": "360"
+                                    },
+                                    "to_city": {
+                                        "type": "integer",
+                                        "example": "522"
+                                    },
+                                    "departure_date_time": {
+                                        "type": "integer",
+                                        "example": "1676881800000"
+                                    },
+                                    "arrival_date_time": {
+                                        "type": "integer",
+                                        "example": "1677659400000"
+                                    },
+                                    "adult_count": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "teen_count": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "kid_count": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "infant_count": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    },
+                                    "hotel_id": {
+                                        "type": "integer",
+                                        "example": "3"
+                                    },
+                                    "departure_vehicle_id": {
+                                        "type": "integer",
+                                        "example": "6"
+                                    },
+                                    "arrival_vehicle_id": {
+                                        "type": "integer",
+                                        "example": "9"
+                                    },
+                                    "fullboard": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "breakfast": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "lunch": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "dinner": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "services": {
+                                        "type": "string",
+                                        "example": "31,32,33,36,38"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/tours/{id}": {
+            "get": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "View tour",
+                "description": "View tour",
+                "operationId": "viewTour",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Tour id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
                         "content": {
                             "application/json": {}
                         }

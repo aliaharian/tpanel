@@ -69,6 +69,7 @@ class HotelController extends Controller
         $hotel->hotelImages;
         $hotel->roomServices;
         $hotel->hotelServices;
+        $hotel->image;
         //return json
         return response()->json([
             'hotel' => $hotel,

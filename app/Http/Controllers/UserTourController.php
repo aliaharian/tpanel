@@ -88,7 +88,7 @@ class UserTourController extends Controller
             if (Helper::isSameDay($vehicle->departure_date_time / 1000, $tour->departure_date_time / 1000)) {
 
                 //check if vehicle capacity is enough
-                if ($vehicle->capacity - $vehicle->used_capacity - $tour->adult_count - $tour->kid_count - $tour->teen_count - $tour->infant_count >= 0) {
+                if ($vehicle->capacity - $vehicle->used_count - $tour->adult_count - $tour->kid_count - $tour->teen_count - $tour->infant_count >= 0) {
                     //check if hotel is available in $vehicle->arrival_date_time
                     if (
                         $tour->hotel->available_time_from <= $vehicle->arrival_date_time &&
@@ -113,7 +113,7 @@ class UserTourController extends Controller
         foreach ($arrival_vehicles as $vehicle) {
 
             if (Helper::isSameDay($vehicle->departure_date_time / 1000, $tour->arrival_date_time / 1000)) {
-                if ($vehicle->capacity - $vehicle->used_capacity - $tour->adult_count - $tour->kid_count - $tour->teen_count - $tour->infant_count >= 0) {
+                if ($vehicle->capacity - $vehicle->used_count - $tour->adult_count - $tour->kid_count - $tour->teen_count - $tour->infant_count >= 0) {
                     $arrival_vehicles_array[] = $vehicle;
                 }
             }
@@ -195,7 +195,7 @@ class UserTourController extends Controller
             if (Helper::isSameDay($vehicle->departure_date_time / 1000, $request->from / 1000)) {
 
                 //check if vehicle capacity is enough
-                if ($vehicle->capacity - $vehicle->used_capacity - $request->adult - $request->teens - $request->kids - $request->infants >= 0) {
+                if ($vehicle->capacity - $vehicle->used_count - $request->adult - $request->teens - $request->kids - $request->infants >= 0) {
                     //check if hotel is available in $vehicle->arrival_date_time
                     if (
                         $hotel->available_time_from <= $vehicle->arrival_date_time &&
@@ -243,7 +243,7 @@ class UserTourController extends Controller
         foreach ($arrival_vehicles as $vehicle) {
 
             if (Helper::isSameDay($vehicle->departure_date_time / 1000, $request->to / 1000)) {
-                if ($vehicle->capacity - $vehicle->used_capacity - $request->adult - $request->teens - $request->kids - $request->infants >= 0) {
+                if ($vehicle->capacity - $vehicle->used_count - $request->adult - $request->teens - $request->kids - $request->infants >= 0) {
                     $arrival_vehicles_array[] = $vehicle;
                 }
             }

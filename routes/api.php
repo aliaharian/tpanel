@@ -57,18 +57,28 @@ Route::prefix('/v1')->group(function () {
 
     //hotels
     Route::get('/hotels', [HotelController::class, 'index']);
+    //hotel item
+    Route::get('/hotels/{id}', [HotelController::class, 'show']);
+
     Route::prefix('/tours')->group(
         function () {
             //suggestHotel
             Route::post('/suggest/hotel', [TourController::class, 'suggestHotel']);
             Route::post('/suggest/vehicle', [TourController::class, 'suggestVehicle']);
-
+            Route::post('/calculatePrice', [TourController::class, 'calculatePrice']);
             //tour services
             Route::get('/services', [TourController::class, 'tourServices']);
+
 
             Route::group(
                 ['middleware' => 'auth:api'],
                 function () {
+                        //save
+                        Route::post('/save', [TourController::class, 'saveTour']);
+
+                        //view
+                        Route::get('/{id}', [TourController::class, 'viewTour']);
+
                         //user tours
                         Route::get('/user', [TourController::class, 'userTours']);
                     }
