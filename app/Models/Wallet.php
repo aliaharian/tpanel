@@ -24,6 +24,7 @@ class Wallet extends Model
     //transactions
     public function transactions()
     {
-        return $this->hasMany(WalletTransactions::class);
+        //order by id desc
+        return $this->hasMany(WalletTransactions::class)->orderBy('id', 'desc');
     }
 }

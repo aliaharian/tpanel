@@ -524,7 +524,7 @@ class TourController extends Controller
     public function userTours()
     {
         $user = Auth::user();
-        $tours = UserTour::where('user_id', $user->id)->get();
+        $tours = UserTour::where('user_id', $user->id)->orderBy('id', 'desc')->get();
         foreach ($tours as $tour) {
             $tour->fromCity;
             $tour->toCity;
@@ -796,10 +796,37 @@ class TourController extends Controller
         $tour = UserTour::find($id);
         $tour->fromCity;
         $tour->toCity;
-        $tour->departureVehicle;
-        $tour->arrivalVehicle;
+        $tour->departureVehicle->transportCompany->logo;
+        $tour->arrivalVehicle->transportCompany->logo;
         $tour->hotel;
         $tour->passengers;
+        $tour->rooms;
+        $tour->status;
+        $tour->departureVehicle->pType = 'هواپیما';
+        switch ($tour->departureVehicle->transport_type) {
+            case 'AIRPLANE':
+                $tour->departureVehicle->pType = 'هواپیما';
+                break;
+            case 'TRAIN':
+                $tour->departureVehicle->pType = 'قطار';
+                break;
+            case 'BUS':
+                $tour->departureVehicle->pType = 'اتوبوس';
+                break;
+        }
+
+        $tour->arrivalVehicle->pType = 'هواپیما';
+        switch ($tour->arrivalVehicle->transport_type) {
+            case 'AIRPLANE':
+                $tour->arrivalVehicle->pType = 'هواپیما';
+                break;
+            case 'TRAIN':
+                $tour->arrivalVehicle->pType = 'قطار';
+                break;
+            case 'BUS':
+                $tour->arrivalVehicle->pType = 'اتوبوس';
+                break;
+        }
 
         // $tour->hotel->payable_price = $tour->payablePrice;
 
@@ -834,6 +861,7 @@ class TourController extends Controller
         $tour->hotel->days = $calculateable["days"];
         $tour->hotel->nights = $calculateable["nights"];
         $tour->hotel->image;
+        $tour->buy_date = strtotime($tour->created_at);
 
         if (!$tour) {
             return response()->json([

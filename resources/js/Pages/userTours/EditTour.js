@@ -27,6 +27,9 @@ export default function EditTour(props) {
             departure_transport_vehicle: props.tour?.departure_vehicle_id,
             arrival_transport_vehicle: props.tour?.arrival_vehicle_id,
             fullboard: props.tour?.fullboard || 0,
+            breakfast: props.tour?.breakfast || 0,
+            lunch: props.tour?.lunch || 0,
+            dinner: props.tour?.dinner || 0,
             services:
                 props.tour?.services.map((item) => item.id.toString()) || [],
             rooms: props.tour?.rooms || [
@@ -38,8 +41,11 @@ export default function EditTour(props) {
             ],
         });
     console.log(props.tour);
-    console.log("data",data);
+    console.log("data", data);
     const [hotels, setHotels] = useState(props.hotels);
+    const [breakfast, setBreakfast] = useState(props.tour?.breakfast || 0);
+    const [lunch, setLunch] = useState(props.tour?.lunch || 0);
+    const [dinner, setDinner] = useState(props.tour?.dinner || 0);
     const [totalPrice, setTotalPrice] = useState(props.tour?.payablePrice || 0);
     const [clientErrors, setClientErrors] = useState([]);
     const [fromVehicles, setFromVehicles] = useState(props.departure_vehicles);
@@ -210,6 +216,9 @@ export default function EditTour(props) {
             kids: props.tour.kid_count,
             infants: props.tour.infant_count,
             fullboard: data.fullboard,
+            breakfast: breakfast,
+            lunch: lunch,
+            dinner: dinner,
             services:
                 data.services.length > 0
                     ? data.services.map((item) => item).join(",")
@@ -217,8 +226,9 @@ export default function EditTour(props) {
         });
         console.log(response.data);
         setTotalPrice(response.data.payable_price_format);
-    }, [data]);
+    }, [data, breakfast, lunch, dinner]);
 
+    // console.log('breakfast', breakfast)
     const handleProcess = async (e) => {
         let flag = true;
         //check if rooms array not empty
@@ -252,7 +262,8 @@ export default function EditTour(props) {
         if (flag) {
             //set confirm dialog
 
-            let pastPrice = props.tour.payablePrice.replace(/,/g, "");
+            let pastPrice = props.tour.paied_price.replace(/,/g, "");
+            // let pastPrice = props.tour.payablePrice.replace(/,/g, "");
             let newPrice = totalPrice.replace(/,/g, "");
             let diff = newPrice - pastPrice;
             console.log("pastPrice", pastPrice);
@@ -640,6 +651,104 @@ export default function EditTour(props) {
                                                 </div>
 
                                                 <div className=" flex flex-wrap w-full px-3 mb-6">
+                                                    <div className="block mt-4">
+                                                        <label className="flex items-center">
+                                                            <Checkbox
+                                                                name="services"
+                                                                checked={
+                                                                    breakfast ==
+                                                                    1
+                                                                }
+                                                                value={
+                                                                    "breakfast"
+                                                                }
+                                                                handleChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setBreakfast(
+                                                                        e.target
+                                                                            .checked
+                                                                            ? 1
+                                                                            : 0
+                                                                    );
+                                                                    setData(
+                                                                        "breakfast",
+                                                                        e.target
+                                                                            .checked
+                                                                            ? 1
+                                                                            : 0
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <span className="ml-2 mr-2 text-sm text-gray-600">
+                                                                صبحانه آزاد
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    <div className="block mt-4">
+                                                        <label className="flex items-center">
+                                                            <Checkbox
+                                                                name="services"
+                                                                checked={
+                                                                    lunch == 1
+                                                                }
+                                                                value={"lunch"}
+                                                                handleChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setLunch(
+                                                                        e.target
+                                                                            .checked
+                                                                            ? 1
+                                                                            : 0
+                                                                    );
+
+                                                                    setData(
+                                                                        "lunch",
+                                                                        e.target
+                                                                            .checked
+                                                                            ? 1
+                                                                            : 0
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <span className="ml-2 mr-2 text-sm text-gray-600">
+                                                                نهار آزاد
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                    <div className="block mt-4">
+                                                        <label className="flex items-center">
+                                                            <Checkbox
+                                                                name="services"
+                                                                checked={
+                                                                    dinner == 1
+                                                                }
+                                                                value={"dinner"}
+                                                                handleChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setDinner(
+                                                                        e.target
+                                                                            .checked
+                                                                            ? 1
+                                                                            : 0
+                                                                    );
+                                                                    setData(
+                                                                        "dinner",
+                                                                        e.target
+                                                                            .checked
+                                                                            ? 1
+                                                                            : 0
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <span className="ml-2 mr-2 text-sm text-gray-600">
+                                                                شام آزاد
+                                                            </span>
+                                                        </label>
+                                                    </div>
+
                                                     {props.services.map(
                                                         (item) => (
                                                             <div

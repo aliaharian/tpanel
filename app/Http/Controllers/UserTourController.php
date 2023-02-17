@@ -6,8 +6,11 @@ use App\Models\Hotel;
 use App\Models\TourRoom;
 use App\Models\TourService;
 use App\Models\TourStatus;
+use App\Models\TransactionType;
 use App\Models\TransportVehicle;
 use App\Models\UserTour;
+use App\Models\Wallet;
+use App\Models\WalletTransactions;
 use Helper;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -48,7 +51,7 @@ class UserTourController extends Controller
         $tour->user;
         $tour->status;
         $tour->services;
-        $tour->rooms = TourRoom::where('tour_id', $tour->id)->get();    
+        $tour->rooms = TourRoom::where('tour_id', $tour->id)->get();
         // foreach ($tour->rooms as $room) {
         //     $room->capacity = (int) $room->capacity;
         // }
@@ -270,70 +273,52 @@ class UserTourController extends Controller
             // 'services' => 'required',
         ]);
 
-        $item = Hotel::findOrFail($request->hotel);
-        $departure_vehicle = TransportVehicle::findOrFail($request->from_vehicle);
-        $arrival_vehicle = TransportVehicle::findOrFail($request->to_vehicle);
-        //check if departure vehicle arrival time is bigger than hotel check in time or not
-        $item->arrival_date = date('Y-m-d', $departure_vehicle->arrival_date_time / 1000);
-        $item->leave_date = date('Y-m-d', $arrival_vehicle->departure_date_time / 1000);
+        //calc price
+        $calculateable = Helper::calculateTourInfo($request->from_vehicle, $request->to_vehicle, $request->hotel, $request->adult, $request->kids, $request->teens, $request->infants, [], true);
+        $payablePrice = $calculateable["payable_price"];
 
-        $item->arrival_time = date('H:i:s', $departure_vehicle->arrival_date_time / 1000);
-        $item->leave_time = date('H:i:s', $arrival_vehicle->departure_date_time / 1000);
+        if ($request->services) {
+            //convert $request->setvices to array by ,
+            $services = explode(",", $request->services);
 
-        $item->days = Helper::getDays($item->arrival_date, $item->leave_date);
-        $item->nights = Helper::getDays($item->arrival_date, $item->leave_date);
-
-        if (date('H:i:s', $departure_vehicle->arrival_date_time / 1000) < $item->check_in) {
-            $item->payable_early_check_in_price = $item->early_check_in_price * ($request->adult + $request->kids + $request->teens + $request->infants);
-            $item->days = $item->days + 1;
-        } else {
-            $item->payable_early_check_in_price = 0;
-        }
-
-        //check if arrival vehicle departure time is smaller than hotel check out time or not
-        if (date('H:i:s', $arrival_vehicle->departure_date_time / 1000) > $item->check_out) {
-            $item->payable_late_check_out_price = $item->late_check_out_price * ($request->adult + $request->kids + $request->teens + $request->infants);
-            $item->nights = $item->nights + 1;
-        } else {
-            $item->payable_late_check_out_price = 0;
-        }
-
-        //calculate price of hotel from adult and kids and teens and infants
-        $item->hotel_price = $item->adult_price * $request->adult + $item->kids_price * $request->kids + $item->teens_price * $request->teens + $item->infants_price * $request->infants;
-
-        //calculate price of departure vehicle from adult and kids and teens and infants
-        $item->departure_vehicle_price = $departure_vehicle->adult_price * $request->adult + $departure_vehicle->kids_price * $request->kids + $departure_vehicle->teens_price * $request->teens + $departure_vehicle->infants_price * $request->infants;
-
-        //calculate price of arrival vehicle from adult and kids and teens and infants
-        $item->arrival_vehicle_price = $arrival_vehicle->adult_price * $request->adult + $arrival_vehicle->kids_price * $request->kids + $arrival_vehicle->teens_price * $request->teens + $arrival_vehicle->infants_price * $request->infants;
-        //calculate total price
-        $item->total_price = $item->hotel_price + $item->departure_vehicle_price + $item->arrival_vehicle_price + $item->payable_early_check_in_price + $item->payable_late_check_out_price;
-        //add fullboard price if is 1
-        if ($request->fullboard == 1) {
-            $item->total_price = $item->total_price + $item->fullboard_price * ($request->adult + $request->kids + $request->teens + $request->infants);
-        }
-        //seperate services ids by , and calculate price and add to total price
-        if ($request->services != null) {
-            $services = explode(',', $request->services);
+            // add services to $calculateable
             foreach ($services as $service) {
                 $service = TourService::findOrFail($service);
-                $item->total_price = $item->total_price + $service->price;
+                $payablePrice += $service["price"] * 1.09;
             }
         }
 
-        //add 9 percent tax and calculate payable price with number format
-        $item->payable_price = floor($item->total_price + $item->total_price * 9 / 100);
+        $hotel = Hotel::findOrFail($request->hotel);
+        //aff if $request->fullboard is 1
+        if ($request->fullboard == 1) {
+            $payablePrice += $hotel->fullboard_price *
+                ($request->adult + $request->kids + $request->teens + $request->infants) * 1.09;
+        }
 
-        //hotel services
-        $item->hotel_services = $item->hotelServices;
-        //room services
-        $item->room_services = $item->roomServices;
+        //add if breakfast is 1
+        if ($request->breakfast == 1) {
+            $payablePrice += $hotel->free_breakfast_price *
+                ($request->adult + $request->kids + $request->teens + $request->infants) * 1.09;
+        }
+        //add if dinner is 1
+        if ($request->dinner == 1) {
+            $payablePrice += $hotel->free_dinner_price *
+                ($request->adult + $request->kids + $request->teens + $request->infants) * 1.09;
+        }
+        //add if lunch is 1
+        if ($request->lunch == 1) {
+            $payablePrice += $hotel->free_lunch_price *
+                ($request->adult + $request->kids + $request->teens + $request->infants) * 1.09;
+        }
+
+
 
         return [
-            'hotel' => $item,
-            'departure_vehicle' => $departure_vehicle,
-            'arrival_vehicle' => $arrival_vehicle,
-            'payable_price_format' => number_format($item->payable_price, 0, '.', ',')
+            // 'hotel' => $item,
+            // 'departure_vehicle' => $departure_vehicle,
+            // 'arrival_vehicle' => $arrival_vehicle,
+            'payable_price_format' => number_format($payablePrice, 0, '.', ','),
+            'calculateable' => $calculateable,
             // 'arrival_vehicles' => $arrival_vehicles,
             // 'dep' => $departure_vehicles
 
@@ -343,6 +328,7 @@ class UserTourController extends Controller
 
     public function update(Request $request, $id)
     {
+        // return $request->all();
         //validate data
         $request->validate([
             'hotel' => 'required',
@@ -366,6 +352,20 @@ class UserTourController extends Controller
         if ($request->prices[0] >= $request->prices[1]) {
             //must return diff to user wallet and make tour status FINAL
             $status = "FINAL";
+
+            //user wallet
+            $wallet = Wallet::where('user_id', $user->id)->first();
+            $wallet->update([
+                'user_id' => $user->id,
+                'amount' => $wallet->amount + ($request->prices[0] - $request->prices[1])
+            ]);
+
+            WalletTransactions::create([
+                'wallet_id' => $wallet->id,
+                'amount' => $request->prices[0] - $request->prices[1],
+                'type' => TransactionType::where('value', 'RETURN')->first()->id,
+                'description' => 'بازگشت مبلغ از سفر ' . $tour->id,
+            ]);
         } else {
             //must sms to user to pay diff and make tour status PAY_PENDING
             $status = "PAY_PENDING";
@@ -380,6 +380,9 @@ class UserTourController extends Controller
             'departure_vehicle_id' => $request->departure_transport_vehicle,
             'arrival_vehicle_id' => $request->arrival_transport_vehicle,
             'fullboard' => $request->fullboard,
+            'breakfast' => $request->breakfast,
+            'lunch' => $request->lunch,
+            'dinner' => $request->dinner,
             // 'services' => $request->services,
             // 'rooms' => $request->rooms,
             // 'prices' => $request->prices,

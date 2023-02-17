@@ -48,6 +48,8 @@ class User extends Authenticatable
     //wallet
     public function wallet()
     {
-        return $this->hasOne(Wallet::class);
+        //order by id desc
+        return $this->hasOne(Wallet::class)->orderBy('id', 'desc');
+
     }
 }

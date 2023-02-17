@@ -26,6 +26,9 @@ class UserTour extends Model
         'rooms_count',
         'rooms_name',
         'fullboard',
+        'breakfast',
+        'lunch',
+        'dinner',
         'status_id',
         'transaction_id',
         'payed',
@@ -84,18 +87,18 @@ class UserTour extends Model
 
     public function services()
     {
-        return $this->belongsToMany(TourService::class , "user_tour_services");
+        return $this->belongsToMany(TourService::class, "user_tour_services");
     }
 
     //rooms
     public function rooms()
     {
-        return $this->hasMany(TourRoom::class , "tour_rooms" , "tour_id" );
+        return $this->hasMany(TourRoom::class, "tour_id");
     }
     //passengers
     public function passengers()
     {
-        return $this->belongsToMany(Passenger::class , "user_tour_passengers");
+        return $this->belongsToMany(Passenger::class, "user_tour_passengers");
     }
 
 
