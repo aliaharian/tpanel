@@ -11,7 +11,9 @@ use App\Models\RoomService;
 use App\Models\TourService;
 use App\Models\TransportVehicle;
 use App\Models\UserTour;
+use App\Models\UserTourPassenger;
 use App\Models\userTourService;
+use App\Models\Passenger;
 use Illuminate\Http\Request;
 use Mockery\Undefined;
 use Illuminate\Support\Facades\Auth;
@@ -797,37 +799,38 @@ class TourController extends Controller
         $tour->departureVehicle;
         $tour->arrivalVehicle;
         $tour->hotel;
+        $tour->passengers;
 
         // $tour->hotel->payable_price = $tour->payablePrice;
 
         //calculate price
         $calculateable = Helper::calculateTourInfo($tour->departure_vehicle_id, $tour->arrival_vehicle_id, $tour->hotel_id, $tour->adult_count, $tour->kid_count, $tour->teen_count, $tour->infant_count, [], true);
-
+        $payablePrice = $calculateable["payable_price"];
         foreach ($tour->services as $service) {
-            $calculateable["payable_price"] += $service->price * 1.09;
+            $payablePrice += $service->price * 1.09;
         }
 
         //fullboard
         if ($tour->fullboard) {
-            $calculateable["payable_price"] += $tour->hotel->fullboard_price * ($tour->adult_count + $tour->teen_count + $tour->kid_count) * 1.09;
+            $payablePrice += $tour->hotel->fullboard_price * ($tour->adult_count + $tour->teen_count + $tour->kid_count) * 1.09;
         }
         //breakfast
         if ($tour->breakfast) {
-            $calculateable["payable_price"] += $tour->hotel->free_breakfast_price * ($tour->adult_count + $tour->teen_count + $tour->kid_count) * 1.09;
+            $payablePrice += $tour->hotel->free_breakfast_price * ($tour->adult_count + $tour->teen_count + $tour->kid_count) * 1.09;
         }
         //lunch
         if ($tour->lunch) {
-            $calculateable["payable_price"] += $tour->hotel->free_lunch_price * ($tour->adult_count + $tour->teen_count + $tour->kid_count) * 1.09;
+            $payablePrice += $tour->hotel->free_lunch_price * ($tour->adult_count + $tour->teen_count + $tour->kid_count) * 1.09;
         }
         //dinner
         if ($tour->dinner) {
-            $calculateable["payable_price"] += $tour->hotel->free_dinner_price * ($tour->adult_count + $tour->teen_count + $tour->kid_count) * 1.09;
+            $payablePrice += $tour->hotel->free_dinner_price * ($tour->adult_count + $tour->teen_count + $tour->kid_count) * 1.09;
         }
 
         //math.ceil payble price
-        $calculateable["payable_price"] = ceil($calculateable["payable_price"]);
+        $payablePrice = ceil($payablePrice);
 
-        $tour->hotel->payable_price = $calculateable["payable_price"];
+        $tour->hotel->payable_price = $payablePrice;
         $tour->hotel->days = $calculateable["days"];
         $tour->hotel->nights = $calculateable["nights"];
         $tour->hotel->image;
@@ -842,4 +845,82 @@ class TourController extends Controller
             'calculateable' => $calculateable,
         ], 200);
     }
+
+    //save passengers
+    //annotation
+    /**
+     * @OA\Post(
+     *  path="/v1/tours/savePassengers",
+     * tags={"Tours"},
+     * summary="save tour",
+     * security={{"apiAuth":{}}},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Pass tour suggest parameters",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="tour_id", type="integer", example="8"),
+     *       @OA\Property(property="passengers", type="string", example="ali"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *     response=200,
+     *    description="Success",
+     * @OA\MediaType(
+     *     mediaType="application/json",
+     * )
+     * ),
+     * )
+     * 
+     */
+    public function savePassengers(Request $request)
+    {
+        // return $request->all();
+
+        //find tour
+        $tour = UserTour::findOrFail($request->tourId);
+
+        $tour->passengers;
+        if ($tour->passengers->count() > 0) {
+            return response()->json([
+                'message' => 'تور قبلا ثبت شده است'
+            ], 400);
+        }
+        //user
+        $user = auth()->user();
+        //map $request->passengers and updateOrCreate in passengers table
+        // $passengers = json_decode($request->passengers);
+        foreach ($request->passengers as $passenger) {
+            // return $passenger;
+            $passenger = (object) $passenger;
+            $passenger = Passenger::updateOrCreate(
+                [
+                    'national_code' => $passenger->nationalCode,
+                    'user_id' => $user->id
+                ],
+                [
+                    'name' => $passenger->name,
+                    'last_name' => $passenger->lastName,
+                    'phone' => $passenger->mobile,
+                    'male' => $passenger->gender == 'male' ? 1 : 0,
+                    'day' => $passenger->birthDate[0],
+                    'month' => $passenger->birthDate[1],
+                    'year' => $passenger->birthDate[2],
+                ]
+            );
+            //save passenger in tour
+            UserTourPassenger::create([
+                'user_tour_id' => $tour->id,
+                'passenger_id' => $passenger->id,
+            ]);
+        }
+
+        //goto payment...
+        //send sms...
+
+        return response()->json([
+            'message' => 'با موفقیت ثبت شد',
+        ], 200);
+
+    }
+
 }

@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class UserTourPassenger extends Model
 {
+
     use HasFactory;
+
+    //fillable
+    protected $fillable = [
+        'user_tour_id',
+        'passenger_id',
+    ];
 }
+

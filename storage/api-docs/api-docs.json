@@ -668,6 +668,49 @@
                 ]
             }
         },
+        "/v1/tours/savePassengers": {
+            "post": {
+                "tags": [
+                    "Tours"
+                ],
+                "summary": "save tour",
+                "operationId": "fd989da4d3a39faaeacf12ab5af11de6",
+                "requestBody": {
+                    "description": "Pass tour suggest parameters",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "tour_id": {
+                                        "type": "integer",
+                                        "example": "8"
+                                    },
+                                    "passengers": {
+                                        "type": "string",
+                                        "example": "ali"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
+        },
         "/v1/user/passengers": {
             "get": {
                 "tags": [

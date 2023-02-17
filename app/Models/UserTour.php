@@ -92,6 +92,11 @@ class UserTour extends Model
     {
         return $this->hasMany(TourRoom::class , "tour_rooms" , "tour_id" );
     }
+    //passengers
+    public function passengers()
+    {
+        return $this->belongsToMany(Passenger::class , "user_tour_passengers");
+    }
 
 
 }

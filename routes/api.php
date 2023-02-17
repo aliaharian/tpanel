@@ -76,11 +76,15 @@ Route::prefix('/v1')->group(function () {
                         //save
                         Route::post('/save', [TourController::class, 'saveTour']);
 
-                        //view
-                        Route::get('/{id}', [TourController::class, 'viewTour']);
+                        //save passengers
+                        Route::post('/savePassengers', [TourController::class, 'savePassengers']);
 
                         //user tours
                         Route::get('/user', [TourController::class, 'userTours']);
+
+                        //view
+                        Route::get('/{id}', [TourController::class, 'viewTour']);
+
                     }
             );
         }
