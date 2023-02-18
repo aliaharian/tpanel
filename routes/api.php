@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::prefix('/v1')->group(['middleware' => 'cors'], function () {
+Route::group(['middleware' => 'cors','prefix','/v1'], function () {
 
     //global apis
     Route::post('/sendOtp', [userAuthController::class, 'getPhone']);
