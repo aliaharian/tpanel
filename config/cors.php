@@ -21,7 +21,7 @@ return [
 
     'allowed_origins' => ['https://tourino.ir'],
 
-    'allowed_origins_patterns' => [],
+    'allowed_origins_patterns' => ['*'],
 
     'allowed_headers' => ['*'],
 
