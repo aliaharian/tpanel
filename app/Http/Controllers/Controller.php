@@ -9,7 +9,7 @@ use Illuminate\Routing\Controller as BaseController;
 
 /**
  * @OA\Info(title="My First API", version="0.1")
- * @OA\Server(url="http://localhost:8000/api")
+ * @OA\Server(url="https://dev.tourino.ir/api")
  * @OA\PathItem(
  *    path="/api/v1",
  * )
