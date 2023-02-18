@@ -18,8 +18,8 @@ class Cors
     {
         return $next($request)
         //accept only tourino.ir
-            ->header('Access-Control-Allow-Origin', 'https://tourino.ir')
-            // ->header('Access-Control-Allow-Origin', '*')
+            // ->header('Access-Control-Allow-Origin', 'https://tourino.ir')
+            ->header('Access-Control-Allow-Origin', '*')
             ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
 }
