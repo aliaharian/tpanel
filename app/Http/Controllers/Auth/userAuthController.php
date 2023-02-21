@@ -66,7 +66,7 @@ class userAuthController extends Controller
             
         }
 
-        // $res = Helper::sendOtp($otp, $phone);
+        $res = Helper::sendOtp($otp, $phone);
 
         return response()->json([
             'message' => 'OTP sent successfully',
