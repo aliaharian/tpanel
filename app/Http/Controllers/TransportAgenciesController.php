@@ -41,7 +41,22 @@ class TransportAgenciesController extends Controller
         $logo = null;
 
         if ($request->logo) {
-            $md5Name = md5_file($request->file('logo')->getRealPath());
+
+            //get file size
+            $fileSize = $request->file('logo')->getSize();
+            //file not exeed 800 kb
+            if ($fileSize > 800000) {
+                return Redirect::route('transportCompanies.index')->with('error', 'حجم فایل باید کمتر از 800 کیلوبایت باشد');
+            }
+          
+            //get file extension
+            $fileExtension = $request->file('logo')->getClientOriginalExtension();
+            //file extension must be jpg or png
+            if ($fileExtension != 'jpg' && $fileExtension != 'png') {
+                return Redirect::route('transportCompanies.index')->with('error', 'فرمت فایل باید jpg یا png باشد');
+            }
+            
+            $md5Name = md5_file($request->file('logo')->getRealPath()).max(1,rand(1,100));
             $guessExtension = $request->file('logo')->guessExtension();
             $logoFile = $request->file('logo')->storeAs('/transport_company', $md5Name . '.' . $guessExtension, 'public');
 
@@ -96,12 +111,25 @@ class TransportAgenciesController extends Controller
         $logo = null;
 
         if ($request->logo) {
+            //get file size
+            $fileSize = $request->file('logo')->getSize();
+            //file not exeed 800 kb
+            if ($fileSize > 800000) {
+                return Redirect::route('transportCompanies.index')->with('error', 'حجم فایل باید کمتر از 800 کیلوبایت باشد');
+            }
+            //get file extension
+            $fileExtension = $request->file('logo')->getClientOriginalExtension();
+            //file extension must be jpg or png
+            if ($fileExtension != 'jpg' && $fileExtension != 'png') {
+                return Redirect::route('transportCompanies.index')->with('error', 'فرمت فایل باید jpg یا png باشد');
+            }
+
             if ($company->logo_id != null) {
                 @unlink(public_path() . $company->logo->relative_url);
                 $file_id = $company->logo->id;
                 // File::findOrFail($file_id)->delete();
             }
-            $md5Name = md5_file($request->file('logo')->getRealPath());
+            $md5Name = md5_file($request->file('logo')->getRealPath()).max(1,rand(1,100));
             $guessExtension = $request->file('logo')->guessExtension();
             $logoFile = $request->file('logo')->storeAs('/transport_company', $md5Name . '.' . $guessExtension, 'public');
 
@@ -127,7 +155,8 @@ class TransportAgenciesController extends Controller
         $company = TransportCompany::findOrFail($id);
         $company->logo;
         if ($company->logo_id != null) {
-            unlink(public_path() . $company->logo->relative_url);
+            //unlink public_path() . $company->logo->relative_url if exist
+            @unlink(public_path() . $company->logo->relative_url);
         }
         $company->delete();
         if ($company->logo_id != null) {

@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['https://tourino.ir'],
+    'allowed_origins' => ['https://tourino.ir','http://localhost','http://localhost:3005'],
 
     'allowed_origins_patterns' => ['*'],
 

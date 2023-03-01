@@ -72,6 +72,13 @@ export default function TransportCompaniesList(props) {
                                             />
                                         )}
 
+                                        {props.flash?.error && (
+                                            <Alert
+                                                color="red"
+                                                text={props.flash?.error}
+                                            />
+                                        )}
+
                                         <table className="min-w-full text-center">
                                             <thead className="border-b bg-gray-50">
                                                 <tr>
