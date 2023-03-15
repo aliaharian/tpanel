@@ -40,7 +40,7 @@ export default function AuthenticatedAgency({
                                     تنظیمات
                                 </NavLink>
 
-                                <NavLink
+                                {/* <NavLink
                                     active={
                                         route().current("tourServices.index") ||
                                         route().current("tourServices.create")
@@ -77,12 +77,12 @@ export default function AuthenticatedAgency({
                                             >
                                                 لیست واچر ها
                                             </Dropdown.Link>
-                                            {/* <Dropdown.Link href={route('watchers.create')} method="get">
-                                                ایجاد واچر
-                                            </Dropdown.Link> */}
+                                   
                                         </Dropdown.Content>
                                     </Dropdown>
-                                </NavLink>
+                                </NavLink> */}
+
+                                
                             </div>
                         </div>
 

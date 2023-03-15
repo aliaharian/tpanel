@@ -214,7 +214,7 @@ export default function Authenticated({ auth, header, children, action = "" }) {
                                     </Dropdown>
                                 </NavLink>
 
-                                <NavLink>
+                                {/* <NavLink>
                                     <Dropdown>
                                         <Dropdown.Trigger>
                                             <span className="inline-flex rounded-md">
@@ -254,7 +254,7 @@ export default function Authenticated({ auth, header, children, action = "" }) {
                                             </Dropdown.Link>
                                         </Dropdown.Content>
                                     </Dropdown>
-                                </NavLink>
+                                </NavLink> */}
 
                                 <NavLink>
                                     <Dropdown>
