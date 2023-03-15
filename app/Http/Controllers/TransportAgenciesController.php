@@ -179,3 +179,6 @@ class TransportAgenciesController extends Controller
         return Redirect::route('transportCompanies.index')->with('success', 'شرکت حمل و نقل با موفقیت ویرایش شد'); 
     }
 }
+
+
+
