@@ -98,7 +98,7 @@ export default function TransportCompaniesList(props) {
                                                         scope="col"
                                                         className="text-sm font-medium text-gray-900 px-6 py-4"
                                                     >
-                                                        شرمت حمل و نقل
+                                                        شرکت حمل و نقل
                                                     </th>
                                                     <th
                                                         scope="col"
