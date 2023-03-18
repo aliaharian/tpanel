@@ -6,12 +6,13 @@ import Input from "@/Components/Input";
 import ValidationErrors from "@/Components/ValidationErrors";
 import Select from "@/Components/Select";
 import { Inertia } from "@inertiajs/inertia";
-import { DatePicker } from "jalali-react-datepicker";
+// import { DatePicker } from "jalali-react-datepicker";
 // import { setRTLTextPlugin } from "!mapbox-gl";
 import mapboxgl from "!mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import RichText from "@/Components/RichText";
 import Checkbox from "@/Components/Checkbox";
+import { MobileDatePicker } from "@mui/x-date-pickers";
 
 mapboxgl.accessToken =
     "pk.eyJ1IjoiYWxpYWhhcmlhbjUiLCJhIjoiY2xjb2ltbHh3MWd1dTNvcnlseDQwYjM3MyJ9.004s4ZJVDeXZgb_VLqePrA";
@@ -197,12 +198,12 @@ export default function CreateHotel(props) {
         }
     };
 
-    const onHandleChangeTimeFrom = ({ value }) => {
-        let val = Math.floor(value);
+    const onHandleChangeTimeFrom = (value) => {
+        let val = Math.floor(new Date(value).getTime());
         setData("available_time_from", val);
     };
-    const onHandleChangeTimeTo = ({ value }) => {
-        let val = Math.floor(value);
+    const onHandleChangeTimeTo = (value) => {
+        let val = Math.floor(new Date(value).getTime());
         setData("available_time_to", val);
     };
     return (
@@ -321,22 +322,36 @@ export default function CreateHotel(props) {
                                                         }
                                                     />
                                                 </div>
-                                                <div className="w-1/2 px-3 mb-6">
+                                            
+                                                <div className="w-1/2 mb-6 px-3">
                                                     <Label
                                                         forInput="rate"
                                                         value="درجه هتل"
+                                                        className="mb-1"
                                                     />
-
-                                                    <Input
-                                                        type="text"
+                                                    <Select
                                                         name="rate"
                                                         value={data.rate}
                                                         className="mt-1 block w-full"
                                                         autoComplete="rate"
                                                         isFocused={true}
-                                                        handleChange={
-                                                            onHandleChange
-                                                        }
+                                                        values={[
+                                                            {
+                                                                title: "عالی",
+                                                                value: "عالی",
+                                                            },
+                                                            {
+                                                                title: "خوب",
+                                                                value: "خوب",
+                                                            },
+                                                            {
+                                                                title: "متوسط",
+                                                                value: "متوسط",
+                                                            },
+                                                        ]}
+                                                        handleChange={(e) => {
+                                                            onHandleChange(e);
+                                                        }}
                                                     />
                                                 </div>
                                                 <div className="w-full mb-6 px-3">
@@ -481,30 +496,46 @@ export default function CreateHotel(props) {
                                                         forInput="available_time_from"
                                                         value="تاریخ آزاد از "
                                                     />
-                                                    <DatePicker
+                                                    <MobileDatePicker
+                                                        defaultValue={
+                                                            data.available_time_from
+                                                        }
                                                         className="border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full p-[9px] "
                                                         value={
                                                             data.available_time_from
                                                         }
-                                                        onClickSubmitButton={
-                                                            onHandleChangeTimeFrom
-                                                        }
+                                                        onChange={(
+                                                            newValue
+                                                        ) => {
+                                                            onHandleChangeTimeFrom(
+                                                                newValue
+                                                            );
+                                                        }}
                                                     />
+                                                  
                                                 </div>
                                                 <div className="w-full md:w-1/2 px-3 mb-6">
                                                     <Label
                                                         forInput="available_time_to"
                                                         value="تاریخ آزاد تا"
                                                     />
-                                                    <DatePicker
+                                                    <MobileDatePicker
+                                                        defaultValue={
+                                                            data.available_time_to
+                                                        }
                                                         className="border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full p-[9px] "
                                                         value={
                                                             data.available_time_to
                                                         }
-                                                        onClickSubmitButton={
-                                                            onHandleChangeTimeTo
-                                                        }
+                                                        onChange={(
+                                                            newValue
+                                                        ) => {
+                                                            onHandleChangeTimeTo(
+                                                                newValue
+                                                            );
+                                                        }}
                                                     />
+                                                 
                                                 </div>
                                                 <div className="w-full mb-6 px-3">
                                                     <label
@@ -635,7 +666,9 @@ export default function CreateHotel(props) {
                                                     <Input
                                                         type="currency"
                                                         name="fullboardPrice"
-                                                        value={data.fullboardPrice}
+                                                        value={
+                                                            data.fullboardPrice
+                                                        }
                                                         className="mt-1 block w-full"
                                                         autoComplete="fullboardPrice"
                                                         isFocused={true}
@@ -644,7 +677,6 @@ export default function CreateHotel(props) {
                                                         }
                                                     />
                                                 </div>
-
 
                                                 <div className="w-full md:w-1/2 px-3 mb-6">
                                                     <Label

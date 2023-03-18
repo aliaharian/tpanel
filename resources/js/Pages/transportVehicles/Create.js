@@ -7,7 +7,12 @@ import { useEffect } from "react/cjs/react.production.min";
 import ValidationErrors from "@/Components/ValidationErrors";
 import Select from "@/Components/Select";
 import { Inertia } from "@inertiajs/inertia";
-import { DatePicker } from "jalali-react-datepicker";
+import {
+    DatePicker,
+    MobileDatePicker,
+    MobileDateTimePicker,
+} from "@mui/x-date-pickers";
+// import { DatePicker } from "jalali-react-datepicker";
 
 export default function CreateTransportVehicle(props) {
     const [uploadDone, setUploadDone] = React.useState(true);
@@ -69,7 +74,6 @@ export default function CreateTransportVehicle(props) {
         }
     };
 
-
     const loadFromCities = async (e) => {
         const response = await axios.post(route("loadCity"), {
             province: e.target.value,
@@ -107,12 +111,13 @@ export default function CreateTransportVehicle(props) {
             />
         );
     };
-    const onHandleChangeDepartureDate = ({ value }) => {
-        let val = Math.floor(value);
+    const onHandleChangeDepartureDate = (value) => {
+        let val = Math.floor(new Date(value).getTime());
+
         setData("departure_date", val);
     };
-    const onHandleChangeArrivalDate = ({ value }) => {
-        let val = Math.floor(value);
+    const onHandleChangeArrivalDate = (value) => {
+        let val = Math.floor(new Date(value).getTime());
         setData("arrival_date", val);
     };
     return (
@@ -333,30 +338,47 @@ export default function CreateTransportVehicle(props) {
                                                         forInput="departure_date"
                                                         value="تاریخ و ساعت حرکت"
                                                     />
-                                                    <DatePicker
+                                                    <MobileDateTimePicker
+                                                        defaultValue={
+                                                            data.departure_date
+                                                        }
                                                         className="border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full p-[9px] "
                                                         value={
                                                             data.departure_date
                                                         }
-                                                        onClickSubmitButton={
-                                                            onHandleChangeDepartureDate
-                                                        }
+                                                        onChange={(
+                                                            newValue
+                                                        ) => {
+                                                            onHandleChangeDepartureDate(
+                                                                newValue
+                                                            );
+                                                        }}
                                                     />
+
+                                              
                                                 </div>
                                                 <div className="w-full md:w-1/2 px-3 mb-6">
                                                     <Label
                                                         forInput="arrival_date"
                                                         value="تاریخ و ساعت رسیدن"
                                                     />
-                                                    <DatePicker
+                                                    <MobileDateTimePicker
+                                                        defaultValue={
+                                                            data.arrival_date
+                                                        }
                                                         className="border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full p-[9px] "
                                                         value={
                                                             data.arrival_date
                                                         }
-                                                        onClickSubmitButton={
-                                                            onHandleChangeArrivalDate
-                                                        }
+                                                        onChange={(
+                                                            newValue
+                                                        ) => {
+                                                            onHandleChangeArrivalDate(
+                                                                newValue
+                                                            );
+                                                        }}
                                                     />
+                                            
                                                 </div>
 
                                                 <div className="w-full md:w-1/2 px-3 mb-6">

@@ -6,7 +6,7 @@ import Input from "@/Components/Input";
 import ValidationErrors from "@/Components/ValidationErrors";
 import Radio from "@/Components/Radio";
 import Select from "@/Components/Select";
-import { DatePicker } from "react-advance-jalaali-datepicker";
+// import { DatePicker } from "react-advance-jalaali-datepicker";
 import Checkbox from "@/Components/Checkbox";
 import moment from "jalali-moment";
 

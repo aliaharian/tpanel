@@ -8,7 +8,7 @@ import moment from "jalali-moment";
 import ValidationErrors from "@/Components/ValidationErrors";
 import Label from "@/Components/Label";
 import Select from "@/Components/Select";
-import { DatePicker } from "jalali-react-datepicker";
+// import { DatePicker } from "jalali-react-datepicker";
 import axios from "axios";
 import Radio from "@/Components/Radio";
 import Checkbox from "@/Components/Checkbox";
@@ -92,8 +92,8 @@ export default function EditTour(props) {
         }
     };
 
-    const onHandleChangeTimeFrom = ({ value }) => {
-        let val = Math.floor(value);
+    const onHandleChangeTimeFrom = (value) => {
+        let val = Math.floor(new Date(value).getTime());
         setData("departure_date_time", val);
         getFreeHotels(val);
         getFreeDepartureVehicle(null, val, null);
@@ -102,8 +102,8 @@ export default function EditTour(props) {
         // setData("departure_transport_vehicle", null);
         // setData("arrival_transport_vehicle", null);
     };
-    const onHandleChangeTimeTo = ({ value }) => {
-        let val = Math.floor(value);
+    const onHandleChangeTimeTo = (value) => {
+        let val = Math.floor(new Date(value).getTime());
         setData("arrival_date_time", val);
         getFreeHotels(null, val);
         getFreeDepartureVehicle(null, null, val);
@@ -425,7 +425,23 @@ export default function EditTour(props) {
                                                         forInput="departure_date_time"
                                                         value="تاریخ رفت "
                                                     />
-                                                    <DatePicker
+                                                    <MobileDatePicker
+                                                        defaultValue={
+                                                            data.departure_date_time
+                                                        }
+                                                        className="border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full p-[9px] "
+                                                        value={
+                                                            data.departure_date_time
+                                                        }
+                                                        onChange={(
+                                                            newValue
+                                                        ) => {
+                                                            onHandleChangeTimeFrom(
+                                                                newValue
+                                                            );
+                                                        }}
+                                                    />
+                                                    {/* <DatePicker
                                                         timePicker={false}
                                                         className="border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full p-[9px] "
                                                         value={
@@ -434,14 +450,30 @@ export default function EditTour(props) {
                                                         onClickSubmitButton={
                                                             onHandleChangeTimeFrom
                                                         }
-                                                    />
+                                                    /> */}
                                                 </div>
                                                 <div className="w-full md:w-1/2 px-3 mb-6">
                                                     <Label
                                                         forInput="arrival_date_time"
                                                         value="تاریخ برگشت "
                                                     />
-                                                    <DatePicker
+                                                    <MobileDatePicker
+                                                        defaultValue={
+                                                            data.arrival_date_time
+                                                        }
+                                                        className="border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full p-[9px] "
+                                                        value={
+                                                            data.arrival_date_time
+                                                        }
+                                                        onChange={(
+                                                            newValue
+                                                        ) => {
+                                                            onHandleChangeTimeTo(
+                                                                newValue
+                                                            );
+                                                        }}
+                                                    />
+                                                    {/* <DatePicker
                                                         timePicker={false}
                                                         className="border border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm mt-1 block w-full p-[9px] "
                                                         value={
@@ -450,7 +482,7 @@ export default function EditTour(props) {
                                                         onClickSubmitButton={
                                                             onHandleChangeTimeTo
                                                         }
-                                                    />
+                                                    /> */}
                                                 </div>
 
                                                 <div className="w-full px-3 mb-6">
