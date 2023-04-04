@@ -4,6 +4,7 @@ import { Head } from "@inertiajs/inertia-react";
 import ConfirmDeleteDialog from "@/Components/ConfirmDeleteDialog";
 import { Inertia } from "@inertiajs/inertia";
 import Alert from "@/Components/Alert";
+import moment from "jalali-moment";
 
 export default function TransportCompaniesList(props) {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -17,6 +18,11 @@ export default function TransportCompaniesList(props) {
     };
     const handleEditHotel = (item) => {
         Inertia.get(route("hotels.edit", item.id));
+    };
+    const timetoJalali = (time) => {
+        moment.locale("fa", { useGregorianParser: true });
+
+        return moment(time).format("jYYYY/jMM/jDD");
     };
     const handleActiveHotel = (item) => {
         Inertia.post(route("hotels.active", item.id));
@@ -104,8 +110,21 @@ export default function TransportCompaniesList(props) {
                                                         scope="col"
                                                         className="text-sm font-medium text-gray-900 px-6 py-4"
                                                     >
+                                                        تاریخ از
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4"
+                                                    >
+                                                        تاریخ تا
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4"
+                                                    >
                                                         موجودی
                                                     </th>
+
                                                     <th
                                                         scope="col"
                                                         className="text-sm font-medium text-gray-900 px-6 py-4"
@@ -158,10 +177,54 @@ export default function TransportCompaniesList(props) {
                                                                 }
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                                                {parseInt(
-                                                                    item.capacity
-                                                                ) -
-                                                                    item.used_capacity}
+                                                                <p
+                                                                    className={
+                                                                        item.available_time_from >
+                                                                        Date.now()
+                                                                            ? "text-red-500"
+                                                                            : ""
+                                                                    }
+                                                                >
+                                                                    {timetoJalali(
+                                                                        parseInt(
+                                                                            item.available_time_from
+                                                                        )
+                                                                    )}
+                                                                </p>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                <p
+                                                                    className={
+                                                                        item.available_time_to <
+                                                                        Date.now()
+                                                                            ? "text-red-500"
+                                                                            : ""
+                                                                    }
+                                                                >
+                                                                    {timetoJalali(
+                                                                        parseInt(
+                                                                            item.available_time_to
+                                                                        )
+                                                                    )}
+                                                                </p>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                <p
+                                                                    className={
+                                                                        parseInt(
+                                                                            item.capacity
+                                                                        ) -
+                                                                            item.used_capacity <
+                                                                        5
+                                                                            ? "text-red-500"
+                                                                            : ""
+                                                                    }
+                                                                >
+                                                                    {parseInt(
+                                                                        item.capacity
+                                                                    ) -
+                                                                        item.used_capacity}
+                                                                </p>
                                                             </td>
                                                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                                 <a

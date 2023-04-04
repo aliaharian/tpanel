@@ -4,6 +4,7 @@ import { Head } from "@inertiajs/inertia-react";
 import ConfirmDeleteDialog from "@/Components/ConfirmDeleteDialog";
 import { Inertia } from "@inertiajs/inertia";
 import Alert from "@/Components/Alert";
+import moment from "jalali-moment";
 
 export default function TransportCompaniesList(props) {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -11,6 +12,11 @@ export default function TransportCompaniesList(props) {
     const confirmDeleteVehicle = (item) => {
         setSelectedVehicle(item);
         setOpenDeleteDialog(true);
+    };
+    const timetoJalali = (time) => {
+        moment.locale("fa", { useGregorianParser: true });
+
+        return moment(time).format("jYYYY/jMM/jDD");
     };
     const handleDeleteVehicle = () => {
         Inertia.delete(route("transportVehicles.destroy", selectedVehicle.id));
@@ -32,7 +38,7 @@ export default function TransportCompaniesList(props) {
         }
     };
     console.log(props);
-    
+
     return (
         <Authenticated
             auth={props.auth}
@@ -60,7 +66,7 @@ export default function TransportCompaniesList(props) {
                 handleDoAction={handleDeleteVehicle}
             />
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-8xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="flex flex-col">
                             <div className="overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -93,6 +99,24 @@ export default function TransportCompaniesList(props) {
                                                         className="text-sm font-medium text-gray-900 px-6 py-4"
                                                     >
                                                         نوع
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4"
+                                                    >
+                                                        مبدا
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4"
+                                                    >
+                                                        مقصد
+                                                    </th>
+                                                    <th
+                                                        scope="col"
+                                                        className="text-sm font-medium text-gray-900 px-6 py-4"
+                                                    >
+                                                        تاریخ حرکت
                                                     </th>
                                                     <th
                                                         scope="col"
@@ -146,14 +170,59 @@ export default function TransportCompaniesList(props) {
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                                 {
-                                                                    item.transport_company.name
+                                                                    item
+                                                                        .from_city
+                                                                        .title
                                                                 }
                                                             </td>
                                                             <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                                                                 {
-                                                                    parseInt(item.capacity) - item.used_count
+                                                                    item.to_city
+                                                                        .title
                                                                 }
                                                             </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                <p
+                                                                    className={
+                                                                        item.departure_date_time <
+                                                                        Date.now()
+                                                                            ? "text-red-500"
+                                                                            : ""
+                                                                    }
+                                                                >
+                                                                    {timetoJalali(
+                                                                        parseInt(
+                                                                            item.departure_date_time
+                                                                        )
+                                                                    )}
+                                                                </p>
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                {
+                                                                    item
+                                                                        .transport_company
+                                                                        .name
+                                                                }
+                                                            </td>
+                                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                                                <p
+                                                                    className={
+                                                                        parseInt(
+                                                                            item.capacity
+                                                                        ) -
+                                                                            item.used_count <
+                                                                        5
+                                                                            ? "text-red-500"
+                                                                            : ""
+                                                                    }
+                                                                >
+                                                                    {parseInt(
+                                                                        item.capacity
+                                                                    ) -
+                                                                        item.used_count}
+                                                                </p>
+                                                            </td>
+
                                                             <td className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap">
                                                                 <a
                                                                     onClick={() =>

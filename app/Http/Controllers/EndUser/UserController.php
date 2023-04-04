@@ -4,6 +4,7 @@ namespace App\Http\Controllers\EndUser;
 
 use App\Http\Controllers\Controller;
 use App\Models\Passenger;
+use Auth;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -117,5 +118,57 @@ class UserController extends Controller
         ]);
     }
 
+
+    //save passenger
+    //annotation
+    /**
+     * @OA\Post(
+     *  path="/v1/user/savePassenger",
+     * tags={"user"},
+     * summary="save Passenger",
+     * security={{"apiAuth":{}}},
+     * @OA\RequestBody(
+     *    required=true,
+     *    description="Pass tour suggest parameters",
+     *    @OA\JsonContent(
+     *       @OA\Property(property="passengers", type="string", example="ali"),
+     *    ),
+     * ),
+     * @OA\Response(
+     *     response=200,
+     *    description="Success",
+     * @OA\MediaType(
+     *     mediaType="application/json",
+     * )
+     * ),
+     * )
+     * 
+     */
+    public function savePassenger(Request $request)
+    {
+        //user
+        $user = auth()->user();
+
+        $passenger = (object) $request->passenger;
+        $passenger = Passenger::updateOrCreate(
+            [
+                'national_code' => $passenger->nationalCode,
+                'user_id' => $user->id
+            ],
+            [
+                'name' => $passenger->name,
+                'last_name' => $passenger->lastName,
+                'phone' => $passenger->mobile,
+                'male' => $passenger->gender == 'male' ? 1 : 0,
+                'day' => $passenger->birthDate[0],
+                'month' => $passenger->birthDate[1],
+                'year' => $passenger->birthDate[2],
+            ]
+        );
+        return response()->json([
+            'message' => 'با موفقیت ثبت شد',
+        ], 200);
+
+    }
 
 }

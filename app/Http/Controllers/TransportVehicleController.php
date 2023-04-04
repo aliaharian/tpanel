@@ -32,7 +32,7 @@ class TransportVehicleController extends Controller
     public function create()
     {
         //
-        $provinces = ProvinceCity::where('parent', 0)->get();
+        $provinces = ProvinceCity::where('parent', 0)->orderBy('title','ASC')->get();
         $transportCompanies = TransportCompany::all();
 
         return Inertia::render('transportVehicles/Create', [
@@ -77,6 +77,7 @@ class TransportVehicleController extends Controller
             'transport_number' => $request->transportNumber,
             'transport_class' => $request->transportClass,
             'capacity' => $request->capacity,
+            'terminal' => $request->terminal,
             'adult_price' => str_replace(',', '', $request->adultPrice),
             'teen_price' => str_replace(',', '', $request->teenPrice),
             'kid_price' => str_replace(',', '', $request->kidPrice),
@@ -107,7 +108,7 @@ class TransportVehicleController extends Controller
         $co->fromCity;
         $co->toCity;
         $co->transportCompany;
-        $provinces = ProvinceCity::where('parent', 0)->get();
+        $provinces = ProvinceCity::where('parent', 0)->orderBy('title','ASC')->get();
         $transportCompanies = TransportCompany::all();
 
         //
@@ -150,6 +151,7 @@ class TransportVehicleController extends Controller
             'transport_type' => $request->type,
             'transport_number' => $request->transportNumber,
             'transport_class' => $request->transportClass,
+            'terminal' => $request->terminal,
             'capacity' => $request->capacity,
             'adult_price' => str_replace(',', '', $request->adultPrice),
             'teen_price' => str_replace(',', '', $request->teenPrice),

@@ -40,7 +40,7 @@ class HotelController extends Controller
     public function create()
     {
         //
-        $provinces = ProvinceCity::where('parent', 0)->get();
+        $provinces = ProvinceCity::where('parent', 0)->orderBy('title','ASC')->get();
         $hotelServices = HotelService::all();
         $roomServices = RoomService::all();
         return Inertia::render('hotels/Create', [
@@ -172,7 +172,7 @@ class HotelController extends Controller
     public function edit($id)
     {
         //
-        $provinces = ProvinceCity::where('parent', 0)->get();
+        $provinces = ProvinceCity::where('parent', 0)->orderBy('title','ASC')->get();
         $hotel = Hotel::findOrFail($id);
         $hotel->cityPlace;
         $hotel->image;

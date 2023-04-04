@@ -36,6 +36,7 @@ export default function CreateTransportVehicle(props) {
             : undefined,
         transportNumber: props.data?.transport_number,
         transportClass: props.data?.transport_class,
+        terminal: props.data?.terminal,
         capacity: props.data?.capacity,
         adultPrice: props.data?.adult_price,
         teenPrice: props.data?.teen_price,
@@ -421,7 +422,27 @@ export default function CreateTransportVehicle(props) {
                                                         }
                                                     />
                                                 </div>
-                                                <div className="w-full px-3 mb-6">
+                                                <div className="w-full md:w-1/2 px-3 mb-6">
+                                                    <Label
+                                                        forInput="terminal"
+                                                        value="ترمینال"
+                                                    />
+
+                                                    <Input
+                                                        type="text"
+                                                        name="terminal"
+                                                        value={
+                                                            data.terminal
+                                                        }
+                                                        className="mt-1 block w-full"
+                                                        autoComplete="terminal"
+                                                        isFocused={true}
+                                                        handleChange={
+                                                            onHandleChange
+                                                        }
+                                                    />
+                                                </div>
+                                                <div className="w-1/2 px-3 mb-6">
                                                     <Label
                                                         forInput="capacity"
                                                         value="ظرفیت"

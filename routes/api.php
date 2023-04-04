@@ -45,6 +45,10 @@ Route::group(['prefix' => '/v1'], function () {
                         //transactions
                         Route::get('/transactions', [UserController::class, 'transactions']);
 
+                        //save passenger
+                        Route::post('/savePassenger', [UserController::class, 'savePassenger']);
+
+
                     }
 
             );

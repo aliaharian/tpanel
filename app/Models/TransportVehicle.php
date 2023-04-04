@@ -20,6 +20,7 @@ class TransportVehicle extends Model
         'transport_number',
         'transport_class',
         'capacity',
+        'terminal',
         'adult_price',
         'teen_price',
         'kid_price',

@@ -46,7 +46,7 @@ class WatcherController extends Controller
         //
         $services = TourService::orderBy('id', 'desc')->get();
         $agencies = Agency::all();
-        $provinces = ProvinceCity::where('parent', 0)->get();
+        $provinces = ProvinceCity::where('parent', 0)->orderBy('title','ASC')->get();
         return Inertia::render('watchers/CreateWatcher', [
             'services' => $services,
             'agencies' => $agencies,
@@ -203,7 +203,7 @@ class WatcherController extends Controller
 
         $services = TourService::orderBy('id', 'desc')->get();
         $agencies = Agency::all();
-        $provinces = ProvinceCity::where('parent', 0)->get();
+        $provinces = ProvinceCity::where('parent', 0)->orderBy('title','ASC')->get();
         $watcher->services;
         $watcher->from_city;
         $watcher->to_city;

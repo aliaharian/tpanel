@@ -272,9 +272,9 @@ export default function EditTour(props) {
             let displayDiff = //seperate three by three
                 diff.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             if (diff > 0) {
-                text = `قیمت جدید تور شما ${totalPrice} ریال می باشد و تفاوت قیمت ${displayDiff} ریال می باشد و به دلیل افزایش قیمت ما به التفاوت مبلغ باید توسط کاربر پرداخت و مجددا بررسی گردد`;
+                text = `قیمت جدید تور شما ${totalPrice} تومان می باشد و تفاوت قیمت ${displayDiff} تومان می باشد و به دلیل افزایش قیمت ما به التفاوت مبلغ باید توسط کاربر پرداخت و مجددا بررسی گردد`;
             } else {
-                text = `قیمت جدید تور شما ${totalPrice} ریال می باشد و تفاوت قیمت ${displayDiff} ریال می باشد و به دلیل کاهش قیمت ما به التفاوت قیمت به کیف پول کاربر باز خواهد گشت و فاکتور تایید نهایی برای کاربر ارسال خواهد شد`;
+                text = `قیمت جدید تور شما ${totalPrice} تومان می باشد و تفاوت قیمت ${displayDiff} تومان می باشد و به دلیل کاهش قیمت ما به التفاوت قیمت به کیف پول کاربر باز خواهد گشت و فاکتور تایید نهایی برای کاربر ارسال خواهد شد`;
             }
 
             setConfirmText(text);
@@ -882,14 +882,14 @@ export default function EditTour(props) {
                                             <div className="flex flex-col flex-wrap mb-6 border m-5 p-5">
                                                 <p>
                                                     هزینه نهایی قابل پرداخت:{" "}
-                                                    {totalPrice} ریال
+                                                    {totalPrice} تومان
                                                 </p>
                                                 <p>
                                                     هزینه پرداخت شده:
                                                     {
                                                         props.tour?.paied_price
                                                     }{" "}
-                                                    ریال
+                                                    تومان
                                                 </p>
                                             </div>
 

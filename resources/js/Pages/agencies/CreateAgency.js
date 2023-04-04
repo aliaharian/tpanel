@@ -165,7 +165,7 @@ export default function AgenciesList(props) {
                                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                                     <Label
                                                         forInput="offPercent"
-                                                        value="درصد یا مبلغ تخفیف به ریال"
+                                                        value="درصد یا مبلغ تخفیف به تومان"
                                                     />
 
                                                     <Input
@@ -183,7 +183,7 @@ export default function AgenciesList(props) {
                                                 <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
                                                     <Label
                                                         forInput="markupPercent"
-                                                        value="درصد یا مبلغ افزایش قیمت به ریال"
+                                                        value="درصد یا مبلغ افزایش قیمت به تومان"
                                                     />
 
                                                     <Input

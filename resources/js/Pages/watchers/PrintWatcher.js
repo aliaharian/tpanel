@@ -406,7 +406,7 @@ const PrintWatcher = ({ watcher, ...props }) => {
                                     قیمت تور برای هر نفر بزرگسال:{" "}
                                 </p>
                                 <p className="text-sm mt-1 mb-10">
-                                    {props.pricePerAdult} ریال
+                                    {props.pricePerAdult} تومان
                                 </p>
                                 {watcher.agency &&
                                 (props.admin || props.agency) ? (
@@ -415,14 +415,14 @@ const PrintWatcher = ({ watcher, ...props }) => {
                                             مبلغ قابل پرداخت برای آژانس:
                                         </p>
                                         <p className="text-sm mt-1 mb-10">
-                                            {props.agencyPrice} ریال
+                                            {props.agencyPrice} تومان
                                         </p>
 
                                         <p className="text-xxs text-gray-600 text-red-500">
                                             مبلغ قابل پرداخت برای مشتری:
                                         </p>
                                         <p className="text-sm mt-1 mb-10 ">
-                                            {props.userPrice} ریال
+                                            {props.userPrice} تومان
                                         </p>
                                     </>
                                 ) : (
@@ -431,7 +431,7 @@ const PrintWatcher = ({ watcher, ...props }) => {
                                             مبلغ قابل پرداخت:
                                         </p>
                                         <p className="text-sm mt-1">
-                                            {props.totalPrice} ریال
+                                            {props.totalPrice} تومان
                                         </p>
                                     </>
                                 )}

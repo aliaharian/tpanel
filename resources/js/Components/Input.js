@@ -21,14 +21,70 @@ export default function Input({
             input.current.focus();
         }
     }, []);
+    var persianNumbers = [
+            /۰/g,
+            /۱/g,
+            /۲/g,
+            /۳/g,
+            /۴/g,
+            /۵/g,
+            /۶/g,
+            /۷/g,
+            /۸/g,
+            /۹/g,
+        ],
+        arabicNumbers = [
+            /٠/g,
+            /١/g,
+            /٢/g,
+            /٣/g,
+            /٤/g,
+            /٥/g,
+            /٦/g,
+            /٧/g,
+            /٨/g,
+            /٩/g,
+        ],
+        fixNumbers = function (str) {
+            if (typeof str === "string") {
+                for (var i = 0; i < 10; i++) {
+                    str = str
+                        .replace(persianNumbers[i], i)
+                        .replace(arabicNumbers[i], i);
+                }
+            }
+            return str;
+        };
 
     // console.log("value", value);
     //render value seperate 3 by 3 if type is currency
     const renderValue = (val) => {
         if (type === "currency") {
             if (val) {
+                //ignore anything except digits and
+                val = val.toString().replace(/[^۰۱۲۳۴۵۶۷۸۹0-9]/g, "");
+                let val2 = fixNumbers(val);
                 //number format with domma
-                var tst = val.replaceAll(",", "");
+                var tst = val2.replaceAll(",", "");
+                var str = tst.toString().split(".");
+                if (str[0].length >= 5) {
+                    str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, "$1,");
+                }
+                if (str[1] && str[1].length >= 5) {
+                    str[1] = str[1].replace(/(\d{3})/g, "$1 ");
+                }
+                return str.join(".");
+            }
+        }
+        if (type == "number") {
+            if (val) {
+                //ignore anything except digits and
+                val = val.toString().replace(/[^۰۱۲۳۴۵۶۷۸۹0-9]/g, "");
+                let val2 = fixNumbers(val);
+                console.log("val", val2);
+
+                //number format with domma
+                var tst = val2.replaceAll(",", "");
                 var str = tst.toString().split(".");
                 if (str[0].length >= 5) {
                     str[0] = str[0].replace(/(\d)(?=(\d{3})+$)/g, "$1,");
@@ -46,7 +102,13 @@ export default function Input({
     return (
         <div className="flex flex-col items-start">
             <input
-                type={type == "currency" ? "text" : type}
+                type={
+                    type == "currency"
+                        ? "text"
+                        : type == "number"
+                        ? "text"
+                        : type
+                }
                 name={name}
                 direction="ltr"
                 style={{ direction: "ltr" }}
@@ -60,17 +122,37 @@ export default function Input({
                 autoComplete={autoComplete}
                 required={required}
                 onChange={(e) => {
-                    handleChange(e, type);
+                    handleChange(
+                        {
+                            ...e,
+                            target: {
+                                ...e.target,
+                                name: e.target.name,
+                                value:
+                                    type == "currency" || type == "number"
+                                        ? fixNumbers(
+                                              e.target.value
+                                                  .toString()
+                                                  .replace(
+                                                      /[^۰۱۲۳۴۵۶۷۸۹0-9]/g,
+                                                      ""
+                                                  )
+                                          )
+                                        : fixNumbers(e.target.value),
+                            },
+                        },
+                        type
+                    );
                 }}
             />
             {type === "currency" && value && (
                 <p className="text-sm">
-                    {value.num2persian()}{" "}
+                    {fixNumbers(value).num2persian()}{" "}
                     {percentOrPrice
                         ? value.length > 2
-                            ? "ریال"
+                            ? "تومان"
                             : "درصد"
-                        : "ریال"}
+                        : "تومان"}
                 </p>
             )}
         </div>

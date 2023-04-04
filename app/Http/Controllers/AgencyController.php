@@ -161,7 +161,7 @@ class AgencyController extends Controller
 
     public function loadCity(Request $request)
     {
-        $cities = ProvinceCity::where('parent', $request->province)->get();
+        $cities = ProvinceCity::where('parent', $request->province)->orderBy('title','ASC')->get();
         return response()->json($cities);
     }
     public function destroy($id)

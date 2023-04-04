@@ -838,6 +838,45 @@
                     }
                 ]
             }
+        },
+        "/v1/user/savePassenger": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "save Passenger",
+                "operationId": "7e1a6adfe337488e71627b78d96ddc5b",
+                "requestBody": {
+                    "description": "Pass tour suggest parameters",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "passengers": {
+                                        "type": "string",
+                                        "example": "ali"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "apiAuth": []
+                    }
+                ]
+            }
         }
     },
     "components": {
