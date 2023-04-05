@@ -4,6 +4,7 @@ import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link } from "@inertiajs/inertia-react";
+import moment from "jalali-moment";
 
 export default function Authenticated({ auth, header, children, action = "" }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -332,6 +333,11 @@ export default function Authenticated({ auth, header, children, action = "" }) {
                                     </Dropdown.Content>
                                 </Dropdown>
                             </div>
+                            {/* <div>
+                                امروز: {moment().format("jYYYY/jMM/jDD")}
+                                <br/>
+                                ساعت: {moment().format("HH:mm")}
+                            </div> */}
                         </div>
 
                         <div className="-mr-2 flex items-center sm:hidden">

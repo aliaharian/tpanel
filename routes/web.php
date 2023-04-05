@@ -43,7 +43,8 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['auth', 'verified', 'adm
     Route::get(
         '/',
         function () {
-            return Inertia::render('Dashboard');
+            $now = Carbon\Carbon::now()->timestamp;
+            return Inertia::render('Dashboard',['now' => $now]);
         }
     )->name('dashboard');
 
