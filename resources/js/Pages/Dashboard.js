@@ -7,9 +7,7 @@ export default function Dashboard(props) {
     const timetoJalali = (time, full = false) => {
         moment.locale("fa", { useGregorianParser: true });
 
-        return full
-            ? moment(time).format("HH:mm:ss")
-            : moment(time).format("jYYYY/jMM/jDD");
+        return moment(time).format("jYYYY/jMM/jDD - HH:mm:ss");
     };
     return (
         <Authenticated
@@ -28,13 +26,16 @@ export default function Dashboard(props) {
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6 bg-white border-b border-gray-200">
                             <p>از منوی بالا گزینه ی مربوطه را انتخاب کنید</p>
+
                             <p>
-                                امروز:
-                                {timetoJalali(parseInt(props.now) * 1000)}
+                                تاریخ و ساعت سرور :
+                                {timetoJalali(parseInt(props.now) * 1000, true)}
                             </p>
                             <p>
-                                ساعت :
-                                {timetoJalali(parseInt(props.now) * 1000, true)}
+                                تاریخ و ساعت سیستم شما :
+                                {
+                                    moment().format("jYYYY/jMM/jDD - HH:mm:ss")
+                                }
                             </p>
                         </div>
                     </div>
